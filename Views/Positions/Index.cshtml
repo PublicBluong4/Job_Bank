@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Bluong4_Job_Bank.Models.Position>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+
+</p>
+<form asp-action="Index" method="get">
+    <table class="table">
+        <colgroup>
+            <col />
+            <col width="300" />
+            <col />
+        </colgroup>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Salary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Occupation)
+                </th>
+
+                <th>
+                    Skills Required
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Occupation.Title)
+                    </td>
+                    @*<td>
+                            @foreach(var s in item.SkillPostions)
+                            {
+                                @s.Skill.Name <br/>
+                            }
+                        </td>*@
+
+                    <td>
+                        @{
+                            int skillCount = item.SkillPostions.Count;
+                            if (skillCount > 0)
+                            {
+                                string firstSpec = item.SkillPostions.FirstOrDefault().Skill.Name;
+                                if (skillCount > 1)
+                                {
+                                    string specList = "";
+                                    var c = item.SkillPostions.ToList();
+                                    for (int i = 1; i < skillCount; i++)
+                                    {
+                                        specList += c[i].Skill.Name + " <br />";
+                                    }
+                                    <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.ID)" aria-expanded="false" aria-controls="collapseSum@(item.ID)">
+                                        @firstSpec... <span class="badge badge-info">@skillCount</span>
+                                    </a>
+                                    <div class="collapse" id="collapseSum@(item.ID)">
+                                        @Html.Raw(specList)
+                                    </div>
+                                }
+                                else
+                                {
+                                    @firstSpec
+                                }
+                            }
+                        }
+                        @*For help with Bootstrap Collapse see: https://getbootstrap.com/docs/4.3/components/collapse/*@
+                    </td>
+
+                    <td>
+                        @if(User.IsInRole("Admin")|| User.IsInRole("Supervisor"))
+                        { 
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> @:|
+                        }
+                        
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @:| @{ <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>}
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PagingNavBar" />
+</form>

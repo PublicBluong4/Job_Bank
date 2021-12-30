@@ -1,0 +1,93 @@
+﻿@model Bluong4_Job_Bank.Models.Applicant
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Applicant</h4>
+    <hr />
+    <div>
+        @{
+            if (Model.ApplicantPhoto != null)
+            {
+                if (Model.ApplicantPhoto.PhotoContentFull.Content != null && Model.ApplicantPhoto.PhotoContentFull.MimeType.Contains("image"))
+                {
+                    string imageBase64 = Convert.ToBase64String(Model.ApplicantPhoto.PhotoContentFull.Content);
+                    string imageSrc = string.Format("data:" + Model.ApplicantPhoto.PhotoContentFull.MimeType + ";base64,{0}", imageBase64);
+                    <img src="@imageSrc" alt="Profile Picture of @Model.FullName" title="Profile Picture of @Model.FullName" style="max-height: 500px; max-width: 600px" class="img-fluid rounded" />
+                }
+            }
+        }
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MiddleName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MiddleName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SIN)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SIN)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Applications)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var app in Model.Applications)
+            {
+                @app.Posting.PositionClose<br />
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RetrainingProgram)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RetrainingProgram.Name)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    @if (String.IsNullOrEmpty(ViewData["returnURL"]?.ToString()))
+    {
+        <a asp-action="Index">Back to List of Applicants</a>
+    }
+    else
+    {
+        <a href='@ViewData["returnURL"]'>Back to List of Applicants</a>
+    }
+</div>

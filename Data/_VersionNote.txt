@@ -1,0 +1,5 @@
+﻿Version 8.8.8.8.6 02 December 2020 9:12 pm
+OK for part 4ABC - OK for pushlish to azure
+ListBox Role OK
+User cannot change Role by itself
+Pushlished on Azure OK

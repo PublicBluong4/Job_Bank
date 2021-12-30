@@ -1,0 +1,56 @@
+﻿@model Bluong4_Job_Bank.Models.Posting
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Posting</h4>
+<hr />
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NumberOpen" class="control-label"></label>
+                <input asp-for="NumberOpen" class="form-control" />
+                <span asp-validation-for="NumberOpen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingDate" class="control-label"></label>
+                <input asp-for="ClosingDate" class="form-control" />
+                <span asp-validation-for="ClosingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PositionID" class="control-label"></label>
+                <select asp-for="PositionID" class="form-control" asp-items="ViewBag.PositionID">
+                    <option value="">Select a Position</option>
+                </select>
+                <span asp-validation-for="PositionID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Upload Documents:</label>
+                <input type="file" class="" name="theFiles" multiple="multiple" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

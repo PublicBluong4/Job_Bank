@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Bluong4_Job_Bank.Models.Posting>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor") || User.IsInRole("Staff"))
+    {
+        <a asp-action="Create">Create New</a>
+    }
+
+</p>
+<form asp-action="Index" method="get">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PositionClose)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumberOpen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClosingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Position)
+                </th>
+                <th>
+                    Document
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PositionClose)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberOpen)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClosingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position.Name)
+                </td>
+
+                <td>
+                    @{
+                        int fileCount = item.PostingDocuments.Count;
+                        if (fileCount > 0)
+                        {
+                            var firstFile = item.PostingDocuments.FirstOrDefault(); ;
+                            if (fileCount > 1)
+                            {
+                                <a class="" role="button" data-toggle="collapse" href="#collapseDocs@(item.ID)" aria-expanded="false" aria-controls="collapseDocs@(item.ID)">
+                                    <span class="badge badge-info">@fileCount</span> Documents...
+                                </a>
+                                <div class="collapse" id="collapseDocs@(item.ID)">
+                                    @{
+                                        foreach (var d in item.PostingDocuments)
+                                        {
+                                            <a asp-action="Download" asp-route-id="@d.ID">@d.FileName</a> <br />
+                                        }
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <a asp-action="Download" asp-route-id="@firstFile.ID">@firstFile.FileName</a>
+                            }
+                        }
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="Notification" asp-route-id="@item.ID" asp-route-TrialName="@item.PositionClose">Send Email Notificaiton</a> |
+                    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor") || User.IsInRole("Staff"))
+                    {
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> @:|
+                    }
+
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Supervisor"))
+                    {
+                        @:| @{<a asp-action="Delete" asp-route-id="@item.ID">Delete</a>}
+                    }
+
+
+                    </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <partial name="_PagingNavBar" />
+</form>
